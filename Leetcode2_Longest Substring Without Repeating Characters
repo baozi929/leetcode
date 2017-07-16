@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> posOfLastChar(256,-1);
+        int maxSubstr = 0;
+        int begin = 0;
+        for(int i = 0; i < s.size(); ++i){
+            if(posOfLastChar[s[i]] >= begin){
+                maxSubstr = max(maxSubstr, i - begin);
+                begin = posOfLastChar[s[i]] + 1;
+            }
+            posOfLastChar[s[i]] = i;
+        }
+        maxSubstr = max(maxSubstr, (int)s.size() - begin);
+        return maxSubstr;
+    }
+};

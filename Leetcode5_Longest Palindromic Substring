@@ -1,0 +1,58 @@
+// 时间复杂度O(n^2)，朴素的思路，以某个位置为中心左右扩展，直到不相等为止
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.size() <= 1)   return s;  
+        
+        string ans = s.substr(0,1);
+        string tmp;
+        int maxlen = 1;
+        
+        // aba  abba
+        // 中心可以是 字符， 也可以是 间隔
+        // 1. 中心为字符的情况
+        for(int i = 1; i < s.size() - 1; ++i){
+            tmp = longestPalindromeIthChar1(s, i);
+            if(tmp.size() > maxlen){
+                ans = tmp;
+                maxlen = ans.size();
+            }
+        }
+        // 2. 中心为字符间隔的情况
+        for(int i = 0; i < s.size() - 1; ++i){
+            tmp = longestPalindromeIthChar2(s, i);
+            if(tmp.size() > maxlen){
+                ans = tmp;
+                maxlen = ans.size();
+            }
+        }
+        return ans;
+    }
+private:
+    // 1. 中心为字符的情况
+    string longestPalindromeIthChar1(string &s, int ii){
+        int tmp = 0;
+        string ans;
+        for(int i = 1; ii + i < s.size() && ii - i >= 0; ++i){
+            if(s[ii + i] == s[ii - i])  tmp++;
+		      	else break;                          // 注意使用break：abcda 返回 bcd 因为 头尾的 aa 使得 tmp + 1
+        }
+        ans = s.substr(ii - tmp, 2 * tmp + 1);
+        return ans;
+    }
+    // 2. 中心为字符间隔的情况
+    string longestPalindromeIthChar2(string &s, int ii){
+        int tmp = 0;
+        string ans;
+        for(int i = 0; ii + i + 1 < s.size() && ii - i >= 0; ++i){
+            if(s[ii + i + 1] == s[ii - i])  tmp++;
+			      else break;
+        }
+        ans = s.substr(ii - tmp + 1, 2 * tmp);  // 长度与开始位置的对应关系
+        return ans;
+    }
+};
+
+// 其他思路：求abbc cbba的最长公共子串
+// http://www.cnblogs.com/en-heng/p/3963803.html
+// http://blog.csdn.net/hrn1216/article/details/51534607

@@ -56,3 +56,4 @@ private:
 // 其他思路：求abbc cbba的最长公共子串
 // http://www.cnblogs.com/en-heng/p/3963803.html
 // http://blog.csdn.net/hrn1216/article/details/51534607
+// http://blog.csdn.net/u013074465/article/details/45392687

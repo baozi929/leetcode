@@ -1,0 +1,44 @@
+// 这道题有一些奇怪的要求
+// 遇到非数字字符，则停止，直接返回到现在为止的数
+// 并且注意用字符串比较数字是否大于某个数的时候
+// 先比较长度，等长度比较大小
+// ∵"2" > "12"
+
+class Solution {
+public:
+    int myAtoi(string str) {
+        int beg = 0;
+        while(beg < str.size() && str[beg] == ' '){
+            beg++;
+        }
+        int flag = 1;
+        
+        if(str[beg] == '-'){
+            flag = -1;
+            beg++;
+        }
+        else if(str[beg] == '+'){
+            beg++;
+        }
+
+        int ans = 0;
+        string ss;
+        for(int i = beg; i < str.size(); ++i){
+            if(str[i] <= '9' && str[i] >= '0'){
+                ans = ans * 10 + str[i] - '0';
+                ss  = ss + str[i];
+            }
+            else{
+                break;     // 遇到字母只取前面的
+            }
+        }
+
+		if(ss.size() < 10)    return flag * ans;
+		if(ss.size() > 10)	  return flag == 1 ? INT_MAX : INT_MIN;
+
+        if(flag == -1 && ss > "2147483648")    return INT_MIN;
+        if(flag ==  1 && ss > "2147483647")    return INT_MAX;
+        
+        return flag * ans;
+    }
+};

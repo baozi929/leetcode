@@ -1,0 +1,20 @@
+// 无法直接判断数有没有溢出，有2个解决思路
+// 1. 用更长的整型来表示，然后判断是否超出Int范围
+// 2. 用字符串表示，翻转字符串，然后比较字符串与"2147483647"（正）或"2147483648"（负）的大小
+class Solution {
+public:
+    int reverse(int x) {
+        int flag = x > 0 ? 1 : -1;
+        x = x > 0 ? x : -x;
+        long ans = 0;
+        
+        while(x > 0){
+            ans = ans * 10 + x % 10;    
+            x = x / 10;
+        }
+        
+        if(ans <= INT_MAX && ans >= INT_MIN)    return (int)(flag * ans);
+        
+        return 0;
+    }
+};

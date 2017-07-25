@@ -1,0 +1,24 @@
+// 递归实现，但是似乎有点慢？
+// 为'*'可以表示任意数量，因此当p[i] == '*'时，我们可以掠过'*'之前的字符
+// 处理s.substr(1)和p的'*'之后的字符串
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if(p.size() == 0)   return s.size() == 0;
+        if(p.size() == 1)   return s.size() == 1 && (s[0] == p[0] || p[0] == '.');
+        if(p[1] != '*'){
+            if(s.size() == 0)   return false;
+            else                return (s[0] == p[0] || p[0] == '.') && isMatch(s.substr(1), p.substr(1));
+        }
+        else{
+            while(s.size() > 0 && (p[0] == s[0] || p[0] == '.')){
+                if(isMatch(s, p.substr(2)))
+                    return true;   
+                s = s.substr(1);
+            }
+            return isMatch(s, p.substr(2));
+        }
+    }
+};
+
+// 用动态规划似乎会快一些

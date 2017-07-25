@@ -1,0 +1,36 @@
+// 暴力解O(n^2)，超时
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int ans = 0;
+        for(int i = 0; i < height.size() - 1; ++i){
+            for(int j = i + 1; j < height.size(); ++j){
+                ans =  max(ans, (j - i)*min(height[i],height[j]));
+            }
+        }
+        return ans;
+    }
+};
+
+// 初始化为两个边界容纳的空间
+// 矮的那头往中间推进
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int ans = 0;
+        int beg = 0, end = height.size() - 1;
+        // 初始化
+        ans = min(height[beg], height[end]) * (end - beg);
+        
+        while(beg < end){
+            if(height[beg] < height[end])
+                beg++;
+            else
+                end--;
+            ans = max(ans, min(height[beg], height[end]) * (end - beg));
+            
+        }
+        
+        return ans;
+    }
+};

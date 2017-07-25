@@ -1,0 +1,24 @@
+// 简单题
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x < 0)	return false;
+        // 找最高位的数量级
+        int first = 1;
+        while(x / first >= 10){
+        	first = first * 10;
+        }
+        // 判断头尾是否相同，并掐头去尾
+        while(x > 0){
+        	int left = x / first;
+        	int right = x % 10;
+        	if(left != right)
+				return false;
+        	else{
+        		x = (x % first) / 10;
+        		first = first / 100;
+        	}
+        }
+        return true;
+    }
+};

@@ -1,0 +1,24 @@
+// 思路：用一个栈存多于的右括号以及还没有匹配的左括号的位置
+// 输入')'，则找栈顶是不是'('，如果是，则弹出栈顶，剩下的即为上一个没匹配的位置last，i-last即为当前括号表达式的长度
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        stack<int> lastIdx;
+        int cnt = 0;
+        int ans = 0;
+		lastIdx.push(-1);
+        for(int i = 0; i < s.size(); ++i){
+            int idx = lastIdx.top();
+            if(idx != -1 && s[i] == ')' && s[idx] == '('){
+                lastIdx.pop();    // 弹出对应的'('的位置，剩下的是最后一个不合法的')'的位置
+                cnt = i - lastIdx.top();
+            }
+            else{
+                lastIdx.push(i);
+            }
+            ans = max(ans, cnt);
+        }
+        return ans;
+    }
+};

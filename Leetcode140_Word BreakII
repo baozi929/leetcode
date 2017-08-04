@@ -1,0 +1,43 @@
+// 复杂度过高？不确定是不是完全正确，简单用例是通过了
+// 挂了的输入：
+// "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+// ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
+// 测试了一下aaaa,["a","aa","aaa"]的情况，输出时正确的，应该是复杂度的问题
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        vector<string> ans;
+        vector<string> path;
+        wordBreak(s, wordDict, ans, path, 0, 0);
+        return ans;
+    }
+private:
+    void wordBreak(string s, vector<string>& wordDict, vector<string> &ans, vector<string> &path, int pathlen, int beg){
+        if(pathlen == s.size()){
+            ans.push_back(splitPath(path));
+            return;
+        }
+        if(beg >= s.size()){
+            return;
+        }
+        string tmp;
+        for(int i = 0; i < wordDict.size(); ++i){
+            tmp = s.substr(beg, wordDict[i].size());
+            if(tmp == wordDict[i]){
+                path.push_back(wordDict[i]);
+                wordBreak(s, wordDict, ans, path, pathlen+wordDict[i].size(), beg+wordDict[i].size());
+                path.pop_back();
+                wordBreak(s, wordDict, ans, path, pathlen, beg+1);
+            }
+        }
+    }
+    string splitPath(vector<string> path){
+        string ret;
+        if(path.size() == 0)    return ret;
+        ret = path[0];
+        for(int i = 1; i < path.size(); ++i){
+            ret = ret + " " + path[i];
+        }
+        return ret;
+    }
+};

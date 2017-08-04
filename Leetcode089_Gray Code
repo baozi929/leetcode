@@ -1,0 +1,24 @@
+// 就按照编码的思路做
+// 0  00
+// 1  01
+//    10
+//    11
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> ans;
+        if(n < 0)	return ans;
+		ans.push_back(0); 
+        if(n == 0)	return ans;
+		ans.push_back(1); 
+		int len = ans.size();
+		int tmp = 1;
+		for(int i = 1; i < n; ++i){
+			tmp = tmp << 1;
+			len = ans.size();
+			for(int j = 0; j < len; ++j)
+				ans.push_back(ans[len - 1 - j] + tmp); 
+		}
+		return ans;
+    }
+};

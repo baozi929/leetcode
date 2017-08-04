@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        string path;
+        generateParenthesis(ans, path, n, 0);
+        return ans;
+    }
+private:
+    void generateParenthesis(vector<string> &ans, string path, int left, int right){
+		if(left == 0 && right == 0){
+            ans.push_back(path);
+            return;
+        }
+        if(left > 0){
+            generateParenthesis(ans, path + '(', left - 1, right + 1);
+        }
+        // 注意，如果此处加else，只会出现((()))的情况
+        // 因为只要left>0，就会加(，而不会加)
+        if(right > 0){
+            generateParenthesis(ans, path + ')', left, right - 1);
+        }
+    }
+};

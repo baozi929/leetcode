@@ -1,0 +1,58 @@
+// 找目标值在一个数组中的所有分解
+// 递归求解
+// -------------------1----------------------------
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> path;
+        int cur = 0;   // where i am
+        sort(candidates.begin(),candidates.end());
+        combinationSum(ans, path, candidates, target, cur);
+        return ans;
+    }
+private:
+    void combinationSum(vector<vector<int>> &ans, vector<int> &path, vector<int>& candidates, int target, int cur){
+        if(cur == candidates.size() || target < 0)
+            return;
+        if(target == 0){
+            ans.push_back(path);
+            return;
+        }
+        path.push_back(candidates[cur]);
+        combinationSum(ans, path, candidates, target - candidates[cur], cur);
+        path.pop_back();
+        combinationSum(ans, path, candidates, target, cur + 1);
+    }
+};
+
+// -----------------------2-----------------------------
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+		if(candidates.empty())	return ans;
+		
+		//排序
+		sort(candidates.begin(), candidates.end()); 
+		
+		int len = candidates.size();
+		vector<int> combination;
+		dfs(combination, candidates, target, 0);
+		return ans;
+    }
+private:
+	vector<vector<int>> ans;
+	void dfs(vector<int> &combination, vector<int> &candidates, int target, int start){
+		if(target == 0){
+			ans.push_back(combination); 
+			return;
+		}
+		for(int i = start; i < candidates.size(); ++i){     
+			if(candidates[i] > target)	return;     //找不到了
+			combination.push_back(candidates[i]);
+			dfs(combination, candidates, target - candidates[i], i);
+			combination.pop_back(); 
+		}
+		
+	} 
+};

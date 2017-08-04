@@ -1,0 +1,24 @@
+// 字符串能不能分成字典的组合
+// 注意初始化为INT_MAX的话，之后加路径要判断原来是不是INT_MAX，要不然加成负数就很尴尬了
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // 每一格表示，到第i位，最少使用步数
+        vector<int> dp(s.size() + 1, INT_MAX);
+        dp[0] = 0;
+        string tmp; int wordlen;
+        for(int i = 1; i <= s.size(); ++i){
+            for(int j = 0; j < wordDict.size(); ++j){
+                wordlen = wordDict[j].size();
+                if(wordlen <= i){
+                    tmp = s.substr(i - wordlen,wordlen);
+                    if(tmp == wordDict[j] && dp[i - wordlen] != INT_MAX)
+                        dp[i] = min(dp[i],dp[i - wordlen]+1);
+                }
+            }
+        }
+        if(dp[s.size()] != INT_MAX)   return true;
+        return false;
+        
+    }
+};

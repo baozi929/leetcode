@@ -76,3 +76,53 @@ private:
         
     }
 };
+
+// -----------------------------暗中观察10ms左右的解法，都用到Hash----------------------------
+// 做了一个非常好的初始化
+// dp存了从第i个字母开始所有可能选择的dict长度，因而在dfs的过程中，避免了大量不必要的分支，机智
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        set<int> word_sizes;
+        for(auto& word : wordDict)
+        {
+            word_sizes.insert(word.size());
+        }
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
+        
+        vector<vector<int>> dp(n, vector<int>{});
+        
+        for(int j = n; j > 0; j--)
+        {
+            if(j != n && dp[j].empty()) continue;
+            for(auto& a : word_sizes)
+            {
+                if(j - a < 0) break;
+                string word_to_search = s.substr(j-a, a);
+                if(dict.count(word_to_search) > 0) dp[j-a].push_back(a);
+            }
+        }
+        
+        vector<string> ret;
+        dfs(ret, s, "", 0, dp);
+        return ret;
+    }
+    
+    void dfs(vector<string>& ret, const string& s, string sol, int level, const vector<vector<int>>& dp)
+    {
+        if(level == s.size())
+        {
+            ret.push_back(sol);
+            return;
+        }
+        
+        for(auto a : dp[level])
+        {
+            string new_sol = sol;
+            if(sol.empty()) new_sol += s.substr(level, a);
+            else new_sol += " " + s.substr(level , a);
+            dfs(ret, s, new_sol, level+a, dp);
+        }
+    }
+};

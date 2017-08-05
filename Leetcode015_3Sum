@@ -1,0 +1,31 @@
+集合中选三个数的和为0
+
+1. dfs方法（超时）
+// 因为我很萌，所以开开心心用了dfs，然后超时（311 / 313 test cases passed.）
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> path;
+        sort(nums.begin(), nums.end());
+        dfs(nums, ans, path, 0, 0);
+        return ans;
+    }
+private:
+    void dfs(vector<int>& nums, vector<vector<int>> &ans, vector<int> &path, int target, int ith){
+        if(path.size() == 3){
+            if(target == 0){
+                ans.push_back(path);
+            }
+            return;
+        }
+        if(ith >= nums.size())  return;
+        
+        path.push_back(nums[ith]);
+        dfs(nums, ans, path, target - nums[ith], ith + 1);
+        path.pop_back();
+        while(ith + 1 < nums.size() && nums[ith] == nums[ith + 1])  ith++;
+        dfs(nums, ans, path, target, ith + 1);
+        
+    }
+};

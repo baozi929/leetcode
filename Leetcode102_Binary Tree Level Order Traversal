@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+// 树的层序遍历，简单题
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if(root == nullptr) return ans;
+        
+        queue<TreeNode*> q;
+        TreeNode* tmp = root;
+        int cnt;
+        int level = 0;
+        
+        q.push(root);
+        
+        while(!q.empty()){
+            cnt = q.size();
+            ans.push_back(vector<int>());
+            while(cnt > 0){
+                tmp = q.front(); q.pop();
+                ans[level].push_back(tmp->val);
+                if(tmp->left)   q.push(tmp->left);
+                if(tmp->right)  q.push(tmp->right);
+                cnt--;       // 之前萌萌地忘记--了，导致死在这里了，囧
+            }
+            level++;
+        }
+        return ans;
+        
+    }
+};

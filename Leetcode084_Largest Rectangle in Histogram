@@ -1,0 +1,84 @@
+// 方法1：超时（95 / 96 test cases passed.）
+// 我的思路
+// 1. 找以heights[i]为高度的矩阵的最大面积
+//    因此用了两个辅助矩阵，分别记录某位置左边、右边各自有多少连续比她大的数
+//    对于凹凸不平的用例，这个方法复杂度应该是一个，但是对于特殊用例（高度基本一致/全递增、递减），复杂度为O(n^2)
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        if(heights.empty())  return 0;
+        int n = heights.size();
+        
+        vector<int> left(n, INT_MAX);
+        vector<int> right(n, INT_MIN);
+        
+        left   [0]   = 0;
+        right[n - 1] = 0;
+        
+        int j, cnt;
+        for(int i = 1; i < n; ++i){
+            j = i - 1;
+            cnt = 0;
+            while(j >= 0 && heights[j] >= heights[i]){
+                cnt++;j--;
+            }
+            left[i] = cnt;
+        }
+        
+        for(int i = n - 2; i >= 0; i--){
+            j = i + 1;
+            cnt = 0;
+            while(j < n && heights[j] >= heights[i]){
+                cnt++;j++;
+            }
+            right[i] = cnt;
+        }
+        
+        int s = 0;
+        
+        for(int i = 0; i < n; ++i){
+            s = max(s, heights[i] * (left[i] + right[i] + 1));
+        }
+        return s;
+    }
+};
+
+// 方法2：用栈
+// 例子：2 1 5 6 2 3 (0,哨兵元素)
+// i = 0     s : 2    area = 0;
+// i = 1     s : 1    area = 2;
+// i = 2     s : 1 5
+// i = 3     s : 1 5 6
+// i = 4     s : 1 2  h = 6 area = 
+// i = 5
+// i = 6
+// 思路：解法的核心在于考虑了直方图两个相邻长方形AB之间的关系。
+//       如果前一个长方形A低后一个长方形B高，则A肯定不会是某个大长方形的终点，
+//       因为我们可以安全地在A后面添加更高的B，使大长方形的宽度加1。
+//       如果A高B低，则A是可能的终点，假设我们就用A当做终点，并且以该长方形的高度当做大长方形的高度，看看可以往前延伸多长。
+//       根据上面这两条性质，我们可以维护一个递增序列（实际为非递减，当前后两个长方形的高度一样时，
+//       前一个长方形同样也不可能是终点，在此为了解释方便假定前后高度都不一样），当B高时就将B的位置添加到序列中，否则就弹出A的位置，
+//       并用A的位置作为终点，A的高度作为大长方形的高度计算面积。
+//       起点怎么确定呢，由于我们维护的是一个递增序列，在弹出A之后，序列中A的前一个位置所对应的长方形高度肯定低于A的高度，
+//       所以A的前一个长方形的位置加1即是大长方形的起点。因为我们每次都是对序列的末尾进行操作，所以可以用一个栈来维护此递增序列。
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        if(heights.empty())  return 0;
+        stack<int> s;
+
+        heights.push_back(0); // 最后放一个哨兵元素，确保栈最后为空
+        
+        int h;   
+        int area = 0;
+        for(int i = 0; i < heights.size(); ++i){
+            while(!s.empty() && heights[s.top()] >= heights[i]){
+                h = heights[s.top()];
+                s.pop();
+                area = max(area, s.empty() ? h * i : h * (i - s.top() - 1));
+            }
+            s.push(i);
+        }
+        return area;
+    }
+};

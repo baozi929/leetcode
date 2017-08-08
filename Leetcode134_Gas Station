@@ -1,0 +1,24 @@
+// 这道题就是求diff[]数组上的 和最大连续子序列，这个最大子序列的起始点就是车的出发点！如果车从这儿开都不能做到油箱不空，那么这个题目就该返回-1了。
+// 因此，这道题转化成了 求循环数组的最大子序列问题
+
+// 记录最后一个加起来小于零的索引，然后返回这个索引+1就是答案了
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int sum = 0;
+        int total = 0;
+        int j = -1;
+        
+        for(int i = 0; i < gas.size(); ++i){
+            sum   += gas[i] - cost[i];
+            total += gas[i] - cost[i];
+            if(sum < 0){
+                j = i; sum = 0;
+            }
+        }
+        
+        if(total < 0)   return -1;
+        else return j + 1;
+        
+    }
+};

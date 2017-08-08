@@ -1,0 +1,52 @@
+// 所有词的长度相同！！！！这个条件极大地减少了复杂度
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        unordered_map<string, int> mapOfWords;
+        int singleWordLen = words[0].length();     //单个字符串的长度
+        int wordsLen = words.size();
+        int slen = s.length();
+        
+        int i, j, count;
+        
+        bool countChanged = false;  // map是否改变？改变需要重新初始化
+        vector<int> ans;
+        count = wordsLen;  // 记录还需要找几个words
+        if(wordsLen == 0 || slen == 0)  return ans;  // 词或者字典为空，就不用找了
+        
+        initializeMap(mapOfWords, words);
+        for(int i = 0; i <= slen - wordsLen*singleWordLen; i++){
+            string subStr = s.substr(i, singleWordLen);
+            j = i;
+            while(mapOfWords.find(subStr)!=mapOfWords.end()  // 找到该字符串
+                  && mapOfWords[subStr]!=0 // 对应的字符串还有剩余次数
+                  && j + singleWordLen<=slen){
+                mapOfWords[subStr] -= 1;   //
+                count--;
+                countChanged = true;
+                j = j + singleWordLen;
+                subStr = s.substr(j,singleWordLen);
+            }
+            if(count == 0){
+                ans.push_back(i);
+            }
+            if(countChanged){
+                mapOfWords.clear();
+                initializeMap(mapOfWords, words);
+                count = wordsLen;
+                countChanged = false;
+            }
+        }
+        return ans;
+    }
+private:
+    void initializeMap(unordered_map<string, int>& map, vector<string>& words){
+        for(int i = 0 ; i < words.size(); i++){  //初始化map
+            if(map.count(words[i])==0){
+               map[words[i]] =  1;
+           }
+           else
+               map[words[i]] += 1;
+       }
+   }
+};

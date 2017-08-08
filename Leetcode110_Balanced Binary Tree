@@ -1,0 +1,26 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+// 是不是平衡树（所有左右子树高度差小于等于1）
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+    	if(!root)	return true;
+		int hl = maxHeight(root->left);
+		int hr = maxHeight(root->right);
+		int diff = (hl - hr > 0) ? (hl - hr) : (hr - hl);
+		if(diff > 1)	return false;
+		return isBalanced(root->left) && isBalanced(root->right);
+    }
+private:
+	int maxHeight(TreeNode* root){
+		if(!root)	return 0;
+		return max(maxHeight(root->left), maxHeight(root->right)) + 1;
+	}
+};

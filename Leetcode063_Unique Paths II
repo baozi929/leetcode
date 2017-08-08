@@ -1,0 +1,28 @@
+// 有障碍的情况
+// dp
+// 可优化为一维数组实现
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+    	int m = obstacleGrid.size();
+    	int n = obstacleGrid[0].size();
+        vector<int> nums(n, 0);
+        if(obstacleGrid[0][0] == 1)	return 0;	// 无路径
+        nums[0] = 1;
+        for(int i = 0; i < m; ++i){
+        	if(nums[0] == 1){
+        		if(obstacleGrid[i][0] == 1)
+        			nums[0] = 0;
+        	}
+        	for(int j = 1; j < n; ++j){
+        		if(obstacleGrid[i][j] == 0){
+        			nums[j] = nums[j] + nums[j - 1];
+        		}
+        		else{
+        			nums[j] = 0;
+        		}
+        	}
+        }
+        return nums[n - 1];
+    }
+};

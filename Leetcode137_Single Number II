@@ -1,0 +1,22 @@
+// 1个数出现1次，其他3次
+
+// 我用了弱智方法
+// 算一下每一位出现几个1，取余数（=0,找的数没有这位/=1,找的数有这位/没有其他可能）
+
+// 复杂度有点高。。。
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+		int sum = 0;
+		for(int i = 0; i < 32; ++i){
+			sum = 0;
+			for(int j = 0; j < nums.size(); ++j){
+				sum += (nums[j] >> i) & 1; 
+			}
+			ans |= (sum % 3) << i;
+		} 
+		return ans;
+    }
+};

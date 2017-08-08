@@ -1,0 +1,36 @@
+// 我用了比较朴素的想法，从左往右，算最高放多少水；从右往左也是一样
+// 低的那个是实际存水的高度
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        if(n <= 2)  return 0;
+        
+        vector<int> water1(n);
+        vector<int> water2(n);
+        
+        int curHeight = height[0];
+        for(int i = 0; i < n; ++i){
+            if(height[i] > curHeight){
+                curHeight = height[i];
+            }
+            water1[i] = curHeight;
+        }
+    
+        curHeight = height[n - 1];
+        for(int i = n - 1; i >= 0; --i){
+            if(height[i] > curHeight){
+                curHeight = height[i];
+            }
+            water2[i] = curHeight;
+        }
+
+        int sum = 0;
+        for(int i = 0; i < n; ++i){
+            sum = sum + min(water1[i],water2[i]) - height[i];
+        }
+
+        return sum;
+    
+    }
+};

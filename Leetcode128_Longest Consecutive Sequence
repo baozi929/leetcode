@@ -1,0 +1,16 @@
+// 复杂度O(n)，重点是要想到用Hash表！！！
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> record(nums.begin(), nums.end());
+        int ans = 0;
+        for(int i = 0; i < nums.size(); ++i){
+            if(record.find(nums[i]) == record.end()) continue; // 没找到就再见
+            int beg = nums[i], end = nums[i];
+            while(record.find(beg - 1) != record.end())  record.erase(beg-- - 1);
+            while(record.find(end + 1) != record.end())  record.erase(end++ + 1);
+            ans = max(ans, end - beg + 1);
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,28 @@
+// 思路是：1.排序 2.数重复的数重复几次 3. 在之前的所有序列后面加上1个2个3个...重复的数，组成新的数组
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+    	sort(nums.begin(), nums.end());
+        vector<vector<int>> result;
+        vector<int> path;
+        result.push_back(path);
+        int lines;
+        int i = 0;
+        while(i < nums.size()){
+            lines = result.size();       // 现在有几行
+            int curnum = nums[i];
+            int cnt = i;
+        	while(i < nums.size() && nums[i] == curnum) i++;
+        	cnt = i - cnt;         // 记录有几个重复的数
+            for(int j = 1; j <= cnt; ++j){
+                vector<int> addJNums(j,curnum);  
+                for(int k = 0; k < lines; ++k){
+                    path = result[k];
+                    path.insert(path.end(),addJNums.begin(),addJNums.end());
+                    result.push_back(path);
+                }
+            }
+        }
+        return result;
+    }
+};

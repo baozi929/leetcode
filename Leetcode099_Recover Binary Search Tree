@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+// 用了朴素的方法，中序遍历，然后排个序，按正确的顺序把值填回去
+// 缺点：用了O(n)空间
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        vector<TreeNode*> tList;
+        vector<int> vList;
+        
+        inorder(tList, vList, root);
+        
+        sort(vList.begin(), vList.end());
+        for(int i = 0; i < vList.size(); ++i){
+            tList[i]->val = vList[i];
+        }
+        
+        
+    }
+private:
+    void inorder(vector<TreeNode*> &tList, vector<int> &vList, TreeNode* root){
+        if(!root)
+            return;
+        
+        inorder(tList, vList, root->left);
+        tList.push_back(root);
+        vList.push_back(root->val);
+        inorder(tList, vList, root->right);
+        
+    }
+};

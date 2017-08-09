@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+// 判断一个树是不是二叉搜索树
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(!root)   return true;
+        if(!root->left && !root->right) return true;
+        return help(root->left,  LONG_MIN, root->val)
+                && help(root->right, root->val, LONG_MAX);
+        
+    }   
+private:
+    bool help(TreeNode* root, long leftLimit, long rightLimit){
+        if(!root)   return true;
+        if(root->val < rightLimit && root->val > leftLimit)  
+            return help(root->left,  leftLimit, root->val)
+                && help(root->right, root->val, rightLimit);
+        return false;
+    }
+};

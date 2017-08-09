@@ -1,0 +1,20 @@
+// discuss中第一名的方法
+// 用动态规划的思路
+// 以当前位置为中心，找所有回文，那么右边对应位置的切割数为左边对应位置的切割数+1
+class Solution {
+public:
+    int minCut(string s) {
+        int n = s.size();
+        vector<int> dp(n+1);
+        for(int i = 0; i <= n; ++i) dp[i] = i - 1; // 初始化为每个都切开
+        
+        for(int i = 0; i < n; ++i){ // 以i为中心找回文 -> 奇数： 更新s[0]~s[i+j]需要的最少切割dp[i+j+1]
+            for (int j = 0; i-j >= 0 && i+j < n && s[i-j]==s[i+j] ; j++) // odd length palindrome
+                dp[i+j+1] = min(dp[i+j+1],1+dp[i-j]);
+                                                      // 偶数： 同奇数，只不过s[0]~s[i+j]有偶数个
+            for (int j = 1; i-j+1 >= 0 && i+j < n && s[i-j+1] == s[i+j]; j++) // even length palindrome
+                dp[i+j+1] = min(dp[i+j+1],1+dp[i-j+1]);
+        }
+        return dp[n];
+    }
+};

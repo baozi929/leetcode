@@ -53,7 +53,12 @@ private:
     }
 };
 
-// 其他思路：求abbc cbba的最长公共子串
+// 其他思路：求abbc cbba的最长公共子串（不是100%是回文，需要加代码验证）
 // http://www.cnblogs.com/en-heng/p/3963803.html
 // http://blog.csdn.net/hrn1216/article/details/51534607
 // http://blog.csdn.net/u013074465/article/details/45392687
+
+// 用dp
+// 二维矩阵，只更新上半部分（i <= j），每格表示i~j是不是回文
+// 初始化，对角线(T)以及边上的一格(s[i]==[s+1])
+// 更新dp[i][j] = dp[i+1][j-1] && s[i] == s[j]  

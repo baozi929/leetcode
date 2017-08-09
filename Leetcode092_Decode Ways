@@ -1,0 +1,20 @@
+// 有0的情况考虑清楚，特殊情况（空集等）考虑清楚能不能用dp表示
+class Solution {
+public:
+    int numDecodings(string s) {
+        if(s.empty())   return 0;
+        if(s[0] == '0') return 0;
+        
+        vector<int> dp(s.size() + 1, 0);
+        dp[0] = 1; dp[1] = 1;
+        for(int i = 2; i <= s.size(); ++i){
+            if(s[i - 1] != '0')    dp[i] = dp[i - 1];  // 前面的组合 + 单数字的解码
+            cout << dp[i] << endl;
+            if((s[i - 2] == '1') || ((s[i - 2] == '2') && (s[i - 1] <= '6'))) // 双数字的解码
+                dp[i] += dp[i - 2];
+            cout << dp[i] << endl;
+        }
+        
+        return dp[s.size()];
+    }
+};

@@ -1,0 +1,70 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        l1 = reverseListNode(l1);
+        l2 = reverseListNode(l2);
+        
+        ListNode* dummyNode = new ListNode(0);
+        ListNode* cur  = dummyNode;
+        ListNode* cur1 = l1;
+        ListNode* cur2 = l2;
+        int carry = 0;
+        int tmp;
+        
+        while(cur1 && cur2){
+            tmp = cur1->val + cur2->val + carry;
+            ListNode* addNode = new ListNode(tmp % 10);
+            carry = tmp / 10;
+            cur1 = cur1->next;
+            cur2 = cur2->next;
+            cur->next = addNode;
+            cur  = cur->next;
+        }
+        
+        if(cur2)    cur1 = cur2;
+        while(cur1){
+            tmp = cur1->val + carry;
+            ListNode* addNode = new ListNode(tmp % 10);
+            carry = tmp / 10;
+            cur1 = cur1->next;
+            cur->next = addNode;
+            cur  = cur->next;
+        }
+        
+        if(carry)   cur->next = new ListNode(1);
+        
+        ListNode* head = dummyNode->next;
+        delete dummyNode;
+        
+        head = reverseListNode(head);
+        
+        return head;
+        
+    }
+private:
+    ListNode* reverseListNode(ListNode* head){
+        if(head == nullptr || head->next == nullptr)
+            return head;
+        ListNode* dummyNode = new ListNode(0);
+        ListNode* cur = head;
+        ListNode* tmp = nullptr;
+        while(cur != nullptr){
+            tmp = cur->next;
+            cur->next = dummyNode->next;
+            dummyNode->next = cur;
+            cur = tmp;
+        }
+        head = dummyNode->next;
+        
+        delete dummyNode;
+        return head;
+    }
+};

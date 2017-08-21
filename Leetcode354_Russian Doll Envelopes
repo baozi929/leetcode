@@ -1,0 +1,30 @@
+// 二维版的 LIS（最长递增子列）的问题
+
+// 用dp的思路做，先排序
+// 从小到大，第一个数从小到大，相同则第二个数也从小到大
+
+// 每个数可以和之前的比较，能不能放进，能就加1
+
+class Solution {
+public:
+    int maxEnvelopes(vector<pair<int, int>>& envelopes) {
+        int ans = 0; 
+        int n = envelopes.size();
+        
+        vector<int> dp(n, 1);
+        
+        sort(envelopes.begin(), envelopes.end());
+        
+        for(int i = 0; i < n; ++i){
+            for(int j = 0; j < i; ++j){
+                if(envelopes[i].first > envelopes[j].first && envelopes[i].second > envelopes[j].second){
+                    dp[i] = max(dp[i], dp[j] + 1);
+                    cout << i << " " << j << endl;
+                }
+            }
+            ans = max(ans, dp[i]);
+            cout << ans << endl;
+        }
+        return ans;
+    }
+};

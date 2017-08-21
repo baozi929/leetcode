@@ -1,0 +1,29 @@
+// 每个字母只能出现一次
+// 返回所有的解中，按字典序最小的
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<int> vec(26, 0);
+        vector<bool> visited(26, false);
+        
+        for(auto c : s){
+            vec[c - 'a']++;
+        }
+        
+        string res = "0";
+        
+        for(auto c : s){
+            vec[c - 'a']--;
+            if(visited[c - 'a']) continue;
+            // 上一个字母后面还有，并且这个字母替换了会让开始更小
+            while(res.back() != '0' && c < res.back() && vec[res.back() - 'a']){
+                visited[res.back() - 'a'] = false;
+                res.pop_back();
+            }
+            res += c;
+            visited[c - 'a'] = true;
+        }
+        return res.substr(1);
+    }
+};

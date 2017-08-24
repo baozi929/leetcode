@@ -50,7 +50,6 @@ int main()
 	quicksort(vec, 0, vec.size());
 	print(vec);
 	
-	cin >> vec[0];
 	return 0;
 }
 
@@ -92,6 +91,71 @@ int main()
 		it = ss.erase(ss.begin());
 	}
 	
-	cin >> vec[0];
+	return 0;
+}
+
+// 归并
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+void merge2(vector<int> &vec, int beg, int mid, int end){
+	vector<int> ans(end - beg + 1);
+	int i = beg, j = mid;
+	int idx = 0;
+	while(i < mid && j <= end){
+		if(vec[i] < vec[j]){
+			ans[idx++] = vec[i++];
+		}
+		else{
+			ans[idx++] = vec[j++];
+		}
+	}
+	while(i < mid){
+		ans[idx++] = vec[i++];
+	}
+	while(j <= end){
+		ans[idx++] = vec[j++];
+	}
+	idx = 0;
+	for(i = beg; i <= end; ++i){
+		vec[i] = ans[idx++];
+	}
+
+}
+
+void mergesort(vector<int> &vec, int beg, int end){
+	if(end > beg){
+		mergesort(vec, beg, (beg + end)/2);
+		mergesort(vec, (beg + end)/2 + 1, end);
+		merge2(vec, beg, (beg + end)/2 + 1, end);
+	}
+}
+
+void print(vector<int> &vec){
+	for(auto it = vec.begin(); it != vec.end(); ++it){
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+	vector<int> vec;
+	//4 5 2 2 1 5 9 44 7
+	//3 5 7 9 2 3 1 0 7 5 4
+	for(int i = 0; i < 11; ++i){
+		int tmp;
+		cin >> tmp;
+		vec.emplace_back(tmp);
+	}
+	
+	mergesort(vec, 0, vec.size()-1);
+	print(vec);
+
 	return 0;
 }

@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <set>
+using namespace std;
+
+int map[5][5] = {                     //定义有向图  
+    {0, 10, INT_MAX, INT_MAX, 5},  
+    {INT_MAX, 0, 1, INT_MAX, 2},  
+    {INT_MAX, INT_MAX, 0, 4, INT_MAX},  
+    {7, INT_MAX, 6, 0, INT_MAX},  
+    {INT_MAX, 3, 9, 2, 0}  
+};  
+
+void dijkstra(int map[5][5], vector<int> &lengthFromNode0To, int node){
+	for(int i = 0; i < 5; ++i)	lengthFromNode0To[i] = INT_MAX;
+	vector<bool> visited(5,false);
+	multiset<pair<int,int>> ss;
+	vector<int> prev(5,-1);
+
+	//visited[0] = true;
+	lengthFromNode0To[node] = 0;
+	ss.insert(make_pair(0,node));  // 距离 节点号
+
+	while(!ss.empty()){
+		pair<int,int> tmp = *(ss.begin());
+		ss.erase(ss.begin());
+		visited[tmp.second] = true;
+		lengthFromNode0To[tmp.second] = min(lengthFromNode0To[tmp.second],tmp.first);
+		for(int i = 0; i < 5; ++i){
+			if(!visited[i] && !(map[tmp.second][i] == INT_MAX)){
+				//cout << tmp.first + map[tmp.second][i] << " " << i << endl;
+				if(lengthFromNode0To[tmp.second] + map[tmp.second][i] < lengthFromNode0To[i]){
+					lengthFromNode0To[i] = lengthFromNode0To[tmp.second] + map[tmp.second][i];
+					prev[i] = tmp.second;
+				}
+				ss.insert(make_pair(lengthFromNode0To[i],i));
+			}
+		}
+		//cout << endl;
+	}
+	for(int i = 0; i < 5; ++i){
+		cout << prev[i] << " ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+    vector<int> lengthFromNode0To(5, INT_MAX);
+	
+	int node;
+
+	while(cin >> node){
+
+		dijkstra(map, lengthFromNode0To, node);
+
+		for(int i = 0; i < 5; ++i){
+			cout << lengthFromNode0To[i] << " ";
+		}
+		cout<< endl;
+	}
+
+    return 0;
+}

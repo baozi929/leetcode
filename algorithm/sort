@@ -63,26 +63,6 @@ int main()
 
 using namespace std;
 
-void quicksort(vector<int> &vec, int beg, int end){
-	if(beg >= end)	return;
-
-	int tmp = vec[beg];
-
-	int i = beg + 1, j = beg + 1;
-
-	for(; i < end; ++i){
-		if(vec[i] <= tmp){
-			swap(vec[i],vec[j]);
-			j++;
-		}
-	}
-
-	swap(vec[beg],vec[j-1]);
-	quicksort(vec, 0, j - 1);
-	quicksort(vec, j, end);
-
-}
-
 void print(vector<int> &vec){
 	for(auto it = vec.begin(); it != vec.end(); ++it){
 		cout << *it << " ";

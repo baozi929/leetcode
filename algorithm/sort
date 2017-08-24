@@ -53,3 +53,65 @@ int main()
 	cin >> vec[0];
 	return 0;
 }
+
+// 利用堆排序，默认小到大
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+void quicksort(vector<int> &vec, int beg, int end){
+	if(beg >= end)	return;
+
+	int tmp = vec[beg];
+
+	int i = beg + 1, j = beg + 1;
+
+	for(; i < end; ++i){
+		if(vec[i] <= tmp){
+			swap(vec[i],vec[j]);
+			j++;
+		}
+	}
+
+	swap(vec[beg],vec[j-1]);
+	quicksort(vec, 0, j - 1);
+	quicksort(vec, j, end);
+
+}
+
+void print(vector<int> &vec){
+	for(auto it = vec.begin(); it != vec.end(); ++it){
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+	vector<int> vec;
+	//4 5 2 2 1 5 9 44 7
+	//3 5 7 9 2 3 1 0 7 5 4
+	for(int i = 0; i < 11; ++i){
+		int tmp;
+		cin >> tmp;
+		vec.emplace_back(tmp);
+	}
+	
+	multiset<int, greater<int>> ss;
+
+	for(int i = 0; i < vec.size(); ++i){
+		ss.insert(vec[i]);
+	}
+
+	for(auto it = ss.begin(); it != ss.end();){
+		cout << *it << " ";
+		it = ss.erase(ss.begin());
+	}
+	
+	cin >> vec[0];
+	return 0;
+}
